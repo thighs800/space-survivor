@@ -1,18 +1,18 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const STORAGE_KEY = 'space-survivor-high-score'
 
 export function useHighScore() {
-  const [highScore, setHighScore] = useState<number>(() => {
+  const [highScore, setHighScore] = useState<number>(0)
+
+  useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      return stored ? parseInt(stored, 10) : 0
-    } catch {
-      return 0
-    }
-  })
+      if (stored) setHighScore(parseInt(stored, 10))
+    } catch {}
+  }, [])
 
   const saveHighScore = useCallback((score: number) => {
     setHighScore(prev => {
